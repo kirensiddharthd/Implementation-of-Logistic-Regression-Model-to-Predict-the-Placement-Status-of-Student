@@ -133,7 +133,7 @@ print(
 ```
 
 ## Output:
-![the Logistic Regression Model to Predict the Placement Status of Student](sam.png)
+<img width="659" height="528" alt="image" src="https://github.com/user-attachments/assets/31a83b1e-17d3-424e-86b7-96dd8ba66f4a" />
 
 
 ## Result:
