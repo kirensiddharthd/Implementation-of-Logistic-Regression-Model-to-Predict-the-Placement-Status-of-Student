@@ -1,145 +1,65 @@
-# Implementation-of-Logistic-Regression-Model-to-Predict-the-Placement-Status-of-Student
-
+# Implementation of Logistic Regression Model to Predict the Placement Status of Student
 ## AIM:
-To write a program to implement the the Logistic Regression Model to Predict the Placement Status of Student.
+To write a program to implement the Logistic Regression Model to Predict the Placement Status of Student.
 
 ## Equipments Required:
 1. Hardware – PCs
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Import the required Python libraries such as Pandas and Scikit-learn.
-2. Load the `Placement_Data.csv` dataset using Pandas.
-3. Select the academic performance features `ssc_p`, `hsc_p`, `degree_p`, `etest_p`, and `mba_p` as input variables.
-4. Select `status` as the target variable.
-5. Convert the placement status into numerical values, where `Placed` is represented by 1 and `Not Placed` is represented by 0.
-6. Split the dataset into training and testing data.
-7. Create a Logistic Regression model.
-8. Train the model using the training dataset.
-9. Predict the placement status for the test dataset.
-10. Calculate the accuracy and confusion matrix of the model.
-11. Predict the placement status of a new student using the trained model.
-12. Display the prediction and placement probability.
+1. Import the required libraries and load the Placement_Data.csv dataset.
+2. Drop the unwanted columns (sl_no, salary) and convert the categorical columns into numbers using LabelEncoder.
+3. Split the data into features (X) and target (placement status), then into training and testing sets, and train a Logistic Regression model.
+4. Predict the placement status for the test data and evaluate the model using accuracy, confusion matrix and classification report.
 
 ## Program:
-```
-/*
-Program to implement the the Logistic Regression Model to Predict the Placement Status of Student.
+```python
+'''
+Program to implement the Logistic Regression Model to Predict the Placement Status of Student.
 Developed by: KIREN SIDDHARTH D
 RegisterNumber: 212224250009
+'''
 
+import io
 import pandas as pd
-
+from google.colab import files
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# Load the dataset
-data = pd.read_csv("Placement_Data.csv")
+uploaded = files.upload()
+data = pd.read_csv(io.BytesIO(list(uploaded.values())[0]))
+print(data.head())
 
-# Display the first five records
-print("First five records of the dataset:")
+data1 = data.drop(["sl_no", "salary"], axis=1, errors="ignore")
+print(data1.isnull().sum())
 
-print(data.iloc[:, :8].head().to_string())
+le = LabelEncoder()
+for col in data1.select_dtypes(include="object").columns:
+    data1[col] = le.fit_transform(data1[col])
+print(data1.head())
 
-print("\n", data.iloc[:, 8:].head().to_string())
+X = data1.drop("status", axis=1)
+y = data1["status"]
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-# Select input features
-X = data[
-    [
-        "ssc_p",
-        "hsc_p",
-        "degree_p",
-        "etest_p",
-        "mba_p"
-    ]
-]
-
-# Select target variable
-y = data["status"]
-
-# Convert placement status into numerical values
-# Placed = 1
-# Not Placed = 0
-
-y = y.map({
-    "Placed": 1,
-    "Not Placed": 0
-})
-
-# Split the dataset into training and testing data
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42
-)
-
-# Create Logistic Regression model
-model = LogisticRegression()
-
-# Train the model
+model = LogisticRegression(solver="liblinear")
 model.fit(X_train, y_train)
 
-# Predict placement status
 y_pred = model.predict(X_test)
+print("Predicted:", y_pred)
 
-# Calculate accuracy
-accuracy = accuracy_score(y_test, y_pred)
-
-# Display actual and predicted values
-print("\nActual Placement Status:")
-print(y_test.values)
-
-print("\nPredicted Placement Status:")
-print(y_pred)
-
-# Display accuracy
-print("\nAccuracy:", accuracy)
-
-# Display confusion matrix
-print("\nConfusion Matrix:")
-print(confusion_matrix(y_test, y_pred))
-
-# Predict placement status for a new student
-new_student = pd.DataFrame({
-    "ssc_p": [80],
-    "hsc_p": [75],
-    "degree_p": [78],
-    "etest_p": [80],
-    "mba_p": [72]
-})
-
-# Make prediction
-prediction = model.predict(new_student)
-
-# Calculate probability
-probability = model.predict_proba(new_student)
-
-print("\nNew Student Details:")
-print("SSC Percentage: 80")
-print("HSC Percentage: 75")
-print("Degree Percentage: 78")
-print("E-Test Percentage: 80")
-print("MBA Percentage: 72")
-
-# Display placement prediction
-if prediction[0] == 1:
-    print("\nPredicted Placement Status: Placed")
-else:
-    print("\nPredicted Placement Status: Not Placed")
-
-print(
-    "Placement Probability:",
-    probability[0][1]  )
- 
-*/
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
 ```
 
 ## Output:
-<img width="609" height="609" alt="image" src="https://github.com/user-attachments/assets/0925bfb6-4278-416d-9a1d-ebe72c257e19" />
+<img width="581" height="547" alt="image" src="https://github.com/user-attachments/assets/e0e89e64-e08b-441a-8cae-92da3df3cd5a" />
+<img width="532" height="211" alt="image" src="https://github.com/user-attachments/assets/e785021f-8e00-4157-819f-2d9f4afd5ab7" />
 
 
 ## Result:
-Thus the program to implement the the Logistic Regression Model to Predict the Placement Status of Student is written and verified using python programming.
+Thus the program to implement the Logistic Regression Model to Predict the Placement Status of Student is written and verified using python programming.
