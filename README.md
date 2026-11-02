@@ -39,7 +39,11 @@ data = pd.read_csv("Placement_Data.csv")
 
 # Display the first five records
 print("First five records of the dataset:")
-print(data.head())
+
+print(data.iloc[:, :8].head().to_string())
+
+print("\n", data.iloc[:, 8:].head().to_string())
+
 
 # Select input features
 X = data[
@@ -128,12 +132,13 @@ else:
 
 print(
     "Placement Probability:",
-    probability[0][1]  
+    probability[0][1]  )
+ 
 */
 ```
 
 ## Output:
-<img width="659" height="528" alt="image" src="https://github.com/user-attachments/assets/31a83b1e-17d3-424e-86b7-96dd8ba66f4a" />
+<img width="609" height="609" alt="image" src="https://github.com/user-attachments/assets/0925bfb6-4278-416d-9a1d-ebe72c257e19" />
 
 
 ## Result:
